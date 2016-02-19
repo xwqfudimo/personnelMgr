@@ -2,10 +2,8 @@ package com.xwq.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import com.xwq.constant.SystemConstants;
 import com.xwq.dao.RoleMenuDao;
 import com.xwq.model.RoleMenu;
 
@@ -16,13 +14,11 @@ public class RoleMenuDaoImpl extends BaseDaoImpl<RoleMenu> implements RoleMenuDa
 	 */
 	@Override
 	public void batchAdd(List<RoleMenu> rms) {
-		Session session = this.getSession();
-		for(int i=0; i<rms.size(); i++) {
-			session.save(rms.get(i));
-			if(i % SystemConstants.BATCH_SIZE == 0) {
-				session.flush();
-				session.clear();
-			}
+		String sql = "insert into role_menu(role_id, menu_id) values";
+		for(RoleMenu rm : rms) {
+			sql += "("+ rm.getRoleId() + "," + rm.getMenuId() + "),";
 		}
+		sql = sql.substring(0, sql.length()-1);
+		getSQLQuery(sql).executeUpdate();
 	}
 }

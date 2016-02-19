@@ -60,7 +60,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	public List<Privilege> listByUserId(int userId) {
 		String hql = "select pri from User u, Role r, Privilege pri, UserRole ur, RolePrivilege rp " + 
 						"where u.id=ur.userId AND r.id=ur.roleId AND r.id=rp.roleId AND pri.id=rp.privilegeId " + 
-						"AND u.id = ? order by pri.sort";
+						"AND u.id = ?";
 		return this.PrivilegeDao.getList(hql, userId);
 	}
 
